@@ -40,26 +40,46 @@
 <body>
   <div class="section">
     <h1 id="heading">
-      w/o ocean already: <span id="counter"></span>
+      w/o ocean already: <span class="timeel days">00</span>
+      <span class="timeel timeRefDays">d</span>
+      <span class="timeel hours">00</span>
+      <span class="timeel timeRefHours">h</span>
+      <span class="timeel minutes">00</span>
+      <span class="timeel timeRefMinutes">m</span>
+      <span class="timeel seconds">00</span>
+      <span class="timeel timeRefSeconds">s</span>
       <img src="./img/ocean.jpg" alt="ocean" />
     </h1>
   </div>
 </body>
 
 <script type="text/javascript">
-  var countDownDate = new Date('2020-02-02 17:00');
-  var x = setInterval(function () {
+  window.onload = function() {
+  countUpFromTime("Feb 2, 2020 17:00:00", 'counter');
+};
+function countUpFromTime(countFrom, id) {
+  countFrom = new Date(countFrom).getTime();
+  var now = new Date(),
+      countFrom = new Date(countFrom),
+      timeDifference = (now - countFrom);
 
-    var now = new Date().getTime();
-    var distance = now - countDownDate.getTime();
+  var secondsInADay = 60 * 60 * 1000 * 24,
+      secondsInAHour = 60 * 60 * 1000;
 
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  days = Math.floor(timeDifference / (secondsInADay) * 1);
+  hours = Math.floor((timeDifference % (secondsInADay)) / (secondsInAHour) * 1);
+  mins = Math.floor(((timeDifference % (secondsInADay)) % (secondsInAHour)) / (60 * 1000) * 1);
+  secs = Math.floor((((timeDifference % (secondsInADay)) % (secondsInAHour)) % (60 * 1000)) / 1000 * 1);
 
-    document.getElementById("counter").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-  }, 1000);
+  var idEl = document.getElementById(id);
+  document.getElementsByClassName('days')[0].innerHTML = days;
+  document.getElementsByClassName('hours')[0].innerHTML = hours;
+  document.getElementsByClassName('minutes')[0].innerHTML = mins;
+  document.getElementsByClassName('seconds')[0].innerHTML = secs;
+
+  clearTimeout(countUpFromTime.interval);
+  countUpFromTime.interval = setTimeout(function(){ countUpFromTime(countFrom, id); }, 1000);
+}
 </script>
 
 </html>
